@@ -1,0 +1,30 @@
+﻿<Window x:Class="Comida.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Comida"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <DockPanel>
+            <StackPanel DockPanel.Dock="Right" Width="200" Background="LightGray">
+                <TextBlock>Nombre del plato</TextBlock>
+                <TextBox></TextBox>
+                <TextBlock>Foto del plato</TextBlock>
+                <TextBox></TextBox>
+                <TextBlock>Tipo de comida</TextBlock>
+                <ComboBox></ComboBox>
+                
+            </StackPanel>
+            <ListBox>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid></UniformGrid>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+        </DockPanel>
+        
+    </Grid>
+</Window>
