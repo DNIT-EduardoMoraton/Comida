@@ -20,9 +20,17 @@ namespace Comida
     /// </summary>
     public partial class MainWindow : Window
     {
+        private MainWindowVM vm;
         public MainWindow()
         {
             InitializeComponent();
+            vm = new MainWindowVM();
+            this.DataContext = vm;
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

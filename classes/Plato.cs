@@ -1,12 +1,65 @@
-﻿class Plato
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
+
+class Plato : INotifyPropertyChanged
 {
-    public string Nombre { get; set; }
-    public string Imagen { get; set; }
-    public string Tipo { get; set; }
-    public bool Gluten { get; set; }
-    public bool Soja { get; set; }
-    public bool Leche { get; set; }
-    public bool Sulfitos { get; set; }
+    private string nombre;
+
+    public string Nombre
+    {
+        get { return nombre; }
+        set { nombre = value; NotifyPropertyChanged("Nombre"); }
+    }
+
+    private string imagen;
+
+    public string Imagen
+    {
+        get { return imagen; }
+        set { imagen = value; NotifyPropertyChanged("Imagen"); }
+    }
+
+    private string tipo;
+
+    public string Tipo
+    {
+        get { return tipo; }
+        set { tipo = value; NotifyPropertyChanged("Tipo"); }
+    }
+
+    private bool gluten;
+
+    public bool Gluten
+    {
+        get { return gluten; }
+        set { gluten = value; NotifyPropertyChanged("Gluten"); }
+    }
+
+    private bool soja;
+
+    public bool Soja
+    {
+        get { return soja; }
+        set { soja = value; NotifyPropertyChanged("Soja"); }
+    }
+
+    private bool leche;
+
+    public bool Leche
+    {
+        get { return leche; }
+        set { leche = value; NotifyPropertyChanged("Leche"); }
+    }
+
+    private bool sulfitos;
+
+    public bool Sulfitos
+    {
+        get { return sulfitos; }
+        set { sulfitos = value; NotifyPropertyChanged("Sulfitos"); }
+    }
+
 
     public Plato(string nombre, string imagen, string tipo, bool gluten, bool soja, bool leche, bool sulfitos)
     {
@@ -21,6 +74,14 @@
 
     public Plato()
     {
+    }
+
+    //Implementación de la interfaz INotifyPropertyChanged
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    public void NotifyPropertyChanged(string propertyName)
+    {
+        this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
     public static ObservableCollection<Plato> GetSamples(string rutaImagenes)

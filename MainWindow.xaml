@@ -6,25 +6,66 @@
         xmlns:local="clr-namespace:Comida"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <DockPanel>
-            <StackPanel DockPanel.Dock="Right" Width="200" Background="LightGray">
-                <TextBlock>Nombre del plato</TextBlock>
-                <TextBox></TextBox>
-                <TextBlock>Foto del plato</TextBlock>
-                <TextBox></TextBox>
-                <TextBlock>Tipo de comida</TextBlock>
-                <ComboBox></ComboBox>
-                
-            </StackPanel>
-            <ListBox>
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid></UniformGrid>
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-            </ListBox>
-        </DockPanel>
+    <Window.Resources>
+
+        <DataTemplate DataType="{x:Type ListBox}" x:Key="DishItemTemplate">
+            <DockPanel>
+                <Viewbox DockPanel.Dock="Top">
+                    <TextBlock Text="{Binding Nombre, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ItemTitle}"></TextBlock>
+                </Viewbox>
+                <DockPanel DockPanel.Dock="Bottom" LastChildFill="False">
+                    <Image x:Name="flagImage" DockPanel.Dock="Left"/>
+                    <Image x:Name="sulfitoImage" DockPanel.Dock="Right"/>
+                    <Image x:Name="lecheImage" DockPanel.Dock="Right"/>
+                    <Image x:Name="sojaoImage" DockPanel.Dock="Right"/>
+                    <Image x:Name="glutenImage" DockPanel.Dock="Right"/>
+                    
+                </DockPanel>
+                <Image x:Name="mainImage" Width="250" Source="{Binding Imagen}" Stretch="UniformToFill"/>
+            </DockPanel>
+        </DataTemplate>
+
+        <Style x:Key="ItemTitle" TargetType="{x:Type TextBlock">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=CurrentHeroe.Vengador}" Value="True">
+                    <Setter Property="FontFamily" Value=""
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        
+    </Window.Resources>
+    
+    
+    <Grid Background="LightBlue">
+        <Border Margin="8" BorderBrush="Black" BorderThickness="1">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Right" Width="200" Background="LightGray" DataContext="{Binding  CurrDish}">
+                    <TextBlock>Nombre del plato</TextBlock>
+                    <TextBox Text="{Binding Nombre, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    <TextBlock>Foto del plato</TextBlock>
+                    <TextBox Text="{Binding Imagen}"></TextBox>
+                    <TextBlock>Tipo de comida</TextBlock>
+                    <ComboBox></ComboBox>
+                    <GroupBox Header="Alérgenos">
+                        <UniformGrid>
+                            <CheckBox Margin="10" IsChecked="{Binding Leche}" >Leche</CheckBox>
+                            <CheckBox Margin="10" IsChecked="{Binding Soja}" >Soja  </CheckBox>
+                            <CheckBox Margin="10" IsChecked="{Binding Gluten}" >Gluten</CheckBox>
+                            <CheckBox Margin="10" IsChecked="{Binding Sulfitos}" >Sulfitos</CheckBox>
+                        </UniformGrid>
+                    </GroupBox>
+
+                </StackPanel>
+                <ListBox x:Name="mainListBox" ItemsSource="{Binding Dishes}" SelectedItem="{Binding CurrDish}" ItemTemplate="{StaticResource DishItemTemplate}">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid></UniformGrid>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+            </DockPanel>
+        </Border>
+       
         
     </Grid>
 </Window>
