@@ -29,10 +29,22 @@ namespace Comida
             set { currDish = value; NotifyPropertyChanged("CurrDish"); }
         }
 
+        private List<string> countries;
+
+        public List<string> Countries
+        {
+            get { return countries; }
+            set { countries = value; NotifyPropertyChanged("Countries");  }
+        }
+
 
         public MainWindowVM()
         {
             this.dishes = Plato.GetSamples(Path.Combine(@"C:\Users\alumno\source\repos\Comida\img\foods"));
+            Countries = new List<string>();
+            Countries.Add("Americana");
+            Countries.Add("China");
+            Countries.Add("Mexicana");
             currDish = null;
         }
 

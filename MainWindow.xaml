@@ -8,9 +8,22 @@
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
 
+        <Style x:Key="ItemTitle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontFamily" Value="Taco Salad"></Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="China">
+                    <Setter Property="FontFamily" Value="Chinese Wok Food St"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="Americana">
+                    <Setter Property="FontFamily" Value="Slim Summer"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        
+        
         <DataTemplate DataType="{x:Type ListBox}" x:Key="DishItemTemplate">
-            <DockPanel>
-                <Viewbox DockPanel.Dock="Top">
+            <DockPanel Width="200">
+                <Viewbox DockPanel.Dock="Top" Height="70">
                     <TextBlock Text="{Binding Nombre, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ItemTitle}"></TextBlock>
                 </Viewbox>
                 <DockPanel DockPanel.Dock="Bottom" LastChildFill="False">
@@ -19,20 +32,11 @@
                     <Image x:Name="lecheImage" DockPanel.Dock="Right"/>
                     <Image x:Name="sojaoImage" DockPanel.Dock="Right"/>
                     <Image x:Name="glutenImage" DockPanel.Dock="Right"/>
-                    
+
                 </DockPanel>
-                <Image x:Name="mainImage" Width="250" Source="{Binding Imagen}" Stretch="UniformToFill"/>
+                <Image x:Name="mainImage" Source="{Binding Imagen}"  Width="200" Height="200"  Stretch="UniformToFill"/>
             </DockPanel>
         </DataTemplate>
-
-        <Style x:Key="ItemTitle" TargetType="{x:Type TextBlock">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=CurrentHeroe.Vengador}" Value="True">
-                    <Setter Property="FontFamily" Value=""
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-        
     </Window.Resources>
     
     
@@ -45,21 +49,21 @@
                     <TextBlock>Foto del plato</TextBlock>
                     <TextBox Text="{Binding Imagen}"></TextBox>
                     <TextBlock>Tipo de comida</TextBlock>
-                    <ComboBox></ComboBox>
+                    <ComboBox ItemsSource="{Binding Countries}"></ComboBox>
                     <GroupBox Header="Alérgenos">
                         <UniformGrid>
                             <CheckBox Margin="10" IsChecked="{Binding Leche}" >Leche</CheckBox>
-                            <CheckBox Margin="10" IsChecked="{Binding Soja}" >Soja  </CheckBox>
+                            <CheckBox Margin="10" IsChecked="{Binding Soja}" >Soja</CheckBox>
                             <CheckBox Margin="10" IsChecked="{Binding Gluten}" >Gluten</CheckBox>
                             <CheckBox Margin="10" IsChecked="{Binding Sulfitos}" >Sulfitos</CheckBox>
                         </UniformGrid>
                     </GroupBox>
 
                 </StackPanel>
-                <ListBox x:Name="mainListBox" ItemsSource="{Binding Dishes}" SelectedItem="{Binding CurrDish}" ItemTemplate="{StaticResource DishItemTemplate}">
+                <ListBox x:Name="mainListBox" ItemsSource="{Binding Dishes}" SelectedItem="{Binding CurrDish}" ItemTemplate="{StaticResource DishItemTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <UniformGrid></UniformGrid>
+                            <WrapPanel></WrapPanel>
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                 </ListBox>
