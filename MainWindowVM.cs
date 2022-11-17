@@ -40,7 +40,7 @@ namespace Comida
 
         public MainWindowVM()
         {
-            this.dishes = Plato.GetSamples(Path.Combine(@"C:\Users\alumno\source\repos\Comida\img\foods"));
+            this.dishes = Plato.GetSamples(Path.Combine(Environment.CurrentDirectory, @"\img\foods"));
             Countries = new List<string>();
             Countries.Add("Americana");
             Countries.Add("China");
@@ -53,6 +53,11 @@ namespace Comida
         public void NotifyPropertyChanged(string propertyName)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void clearSelecction()
+        {
+            CurrDish = null;
         }
 
 

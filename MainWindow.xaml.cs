@@ -28,9 +28,10 @@ namespace Comida
             this.DataContext = vm;
         }
 
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
-        {
 
+        private void limpiarSeleccionButton_Click(object sender, RoutedEventArgs e)
+        {
+            vm.clearSelecction();
         }
     }
 }

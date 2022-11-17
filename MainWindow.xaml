@@ -4,38 +4,70 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Comida"
+        xmlns:conv="clr-namespace:Comida.converters"
         mc:Ignorable="d"
+        
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
-
+        <conv:VisibilityConverter x:Key="visibilityConv"></conv:VisibilityConverter>
+        
         <Style x:Key="ItemTitle" TargetType="{x:Type TextBlock}">
             <Setter Property="FontFamily" Value="Taco Salad"></Setter>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="China">
                     <Setter Property="FontFamily" Value="Chinese Wok Food St"></Setter>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Path=Tipo}" Value="Americana">
+                </DataTrigger>  
+                <DataTrigger Binding="{Binding Tipo}" Value="Americana">
                     <Setter Property="FontFamily" Value="Slim Summer"></Setter>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        
-        
-        <DataTemplate DataType="{x:Type ListBox}" x:Key="DishItemTemplate">
-            <DockPanel Width="200">
-                <Viewbox DockPanel.Dock="Top" Height="70">
-                    <TextBlock Text="{Binding Nombre, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ItemTitle}"></TextBlock>
-                </Viewbox>
-                <DockPanel DockPanel.Dock="Bottom" LastChildFill="False">
-                    <Image x:Name="flagImage" DockPanel.Dock="Left"/>
-                    <Image x:Name="sulfitoImage" DockPanel.Dock="Right"/>
-                    <Image x:Name="lecheImage" DockPanel.Dock="Right"/>
-                    <Image x:Name="sojaoImage" DockPanel.Dock="Right"/>
-                    <Image x:Name="glutenImage" DockPanel.Dock="Right"/>
 
+        <Style x:Key="enabledWhenNull" TargetType="{x:Type StackPanel}">
+            <Setter Property="IsEnabled" Value="True"></Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding CurrDish}" Value="{x:Null}">
+                    <Setter Property="IsEnabled" Value="False"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="flagSelector" TargetType="{x:Type Image}">
+            <Setter Property="Width" Value="30"></Setter>
+            <Setter Property="Source" Value="./img/flags/china.png"></Setter>
+            <Setter Property="ToolTip" Value="Comida china"></Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="Mexicana">
+                    <Setter Property="Source" Value="./img/flags/mexico.png"></Setter>
+                    <Setter Property="ToolTip" Value="Comida mexicana"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="Americana">
+                    <Setter Property="Source" Value="./img/flags/united_states.png"></Setter>
+                    <Setter Property="ToolTip" Value="Comida americana"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <DataTemplate DataType="{x:Type ListBox}" x:Key="DishItemTemplate">
+            <Border BorderBrush="Black" BorderThickness="1" Background="AliceBlue" Margin="10">
+                <Border.Effect>
+                    <DropShadowEffect/>
+                </Border.Effect>
+
+                <DockPanel Width="200">
+                    <Viewbox DockPanel.Dock="Top" Height="70">
+                        <TextBlock Text="{Binding Nombre, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ItemTitle}"></TextBlock>
+                    </Viewbox>
+                    <DockPanel DockPanel.Dock="Bottom" LastChildFill="False">
+                        <Image x:Name="flagImage"  DockPanel.Dock="Left" Style="{StaticResource flagSelector}"/>
+                        <Image x:Name="sulfitoImage" Source="./img/items/sulfide.png" DockPanel.Dock="Right" Visibility="{Binding Sulfitos, Converter={StaticResource visibilityConv}}" Width="20"/>
+                        <Image x:Name="lecheImage" Source="./img/items/milk.png" DockPanel.Dock="Right" Visibility="{Binding Leche, Converter={StaticResource visibilityConv}}" Width="20"/>
+                        <Image x:Name="sojaImage" Source="./img/items/soybean.png" DockPanel.Dock="Right" Visibility="{Binding Soja, Converter={StaticResource visibilityConv}}" Width="20"/>
+                        <Image x:Name="glutenImage" Source="./img/items/gluten.png" DockPanel.Dock="Right" Visibility="{Binding Gluten, Converter={StaticResource visibilityConv}}"  Width="20"/>
+                    </DockPanel>
+                    <Image x:Name="mainImage" Source="{Binding Imagen}"  Width="200" Height="200"  Stretch="UniformToFill"/>
                 </DockPanel>
-                <Image x:Name="mainImage" Source="{Binding Imagen}"  Width="200" Height="200"  Stretch="UniformToFill"/>
-            </DockPanel>
+            </Border>
         </DataTemplate>
     </Window.Resources>
     
@@ -43,22 +75,22 @@
     <Grid Background="LightBlue">
         <Border Margin="8" BorderBrush="Black" BorderThickness="1">
             <DockPanel>
-                <StackPanel DockPanel.Dock="Right" Width="200" Background="LightGray" DataContext="{Binding  CurrDish}">
+                <StackPanel DockPanel.Dock="Right" Width="200" Background="LightGray" Style="{StaticResource enabledWhenNull}">
                     <TextBlock>Nombre del plato</TextBlock>
-                    <TextBox Text="{Binding Nombre, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    <TextBox Text="{Binding CurrDish.Nombre, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding CurrDish}"></TextBox>
                     <TextBlock>Foto del plato</TextBlock>
-                    <TextBox Text="{Binding Imagen}"></TextBox>
+                    <TextBox Text="{Binding CurrDish.Imagen, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                     <TextBlock>Tipo de comida</TextBlock>
-                    <ComboBox ItemsSource="{Binding Countries}"></ComboBox>
+                    <ComboBox ItemsSource="{Binding Countries}" SelectedItem="{Binding CurrDish.Tipo, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
                     <GroupBox Header="Alérgenos">
                         <UniformGrid>
-                            <CheckBox Margin="10" IsChecked="{Binding Leche}" >Leche</CheckBox>
-                            <CheckBox Margin="10" IsChecked="{Binding Soja}" >Soja</CheckBox>
-                            <CheckBox Margin="10" IsChecked="{Binding Gluten}" >Gluten</CheckBox>
-                            <CheckBox Margin="10" IsChecked="{Binding Sulfitos}" >Sulfitos</CheckBox>
+                            <CheckBox Margin="10" IsChecked="{Binding CurrDish.Leche, UpdateSourceTrigger=PropertyChanged}" >Leche</CheckBox>
+                            <CheckBox Margin="10" IsChecked="{Binding CurrDish.Soja, UpdateSourceTrigger=PropertyChanged}" >Soja</CheckBox>
+                            <CheckBox Margin="10" IsChecked="{Binding CurrDish.Gluten, UpdateSourceTrigger=PropertyChanged}" >Gluten</CheckBox>
+                            <CheckBox Margin="10" IsChecked="{Binding CurrDish.Sulfitos, UpdateSourceTrigger=PropertyChanged}" >Sulfitos</CheckBox>
                         </UniformGrid>
                     </GroupBox>
-
+                    <Button x:Name="limpiarSeleccionButton" Click="limpiarSeleccionButton_Click">Limpiar Selección</Button>
                 </StackPanel>
                 <ListBox x:Name="mainListBox" ItemsSource="{Binding Dishes}" SelectedItem="{Binding CurrDish}" ItemTemplate="{StaticResource DishItemTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListBox.ItemsPanel>
