@@ -7,7 +7,7 @@
         xmlns:conv="clr-namespace:Comida.converters"
         mc:Ignorable="d"
         
-        Title="MainWindow" Height="450" Width="800">
+        Title="Comida" Height="450" Width="800" Icon="icons/fruit_food_apple.ico" >
     <Window.Resources>
         <conv:VisibilityConverter x:Key="visibilityConv"></conv:VisibilityConverter>
         
@@ -54,7 +54,7 @@
                     <DropShadowEffect/>
                 </Border.Effect>
 
-                <DockPanel Width="200">
+                <DockPanel Width="200" Margin="10">
                     <Viewbox DockPanel.Dock="Top" Height="70">
                         <TextBlock Text="{Binding Nombre, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ItemTitle}"></TextBlock>
                     </Viewbox>
@@ -73,16 +73,16 @@
     
     
     <Grid Background="LightBlue">
-        <Border Margin="8" BorderBrush="Black" BorderThickness="1">
+        <Border Margin="8" BorderBrush="Black" BorderThickness="1" Background="White">
             <DockPanel>
-                <StackPanel DockPanel.Dock="Right" Width="200" Background="LightGray" Style="{StaticResource enabledWhenNull}">
-                    <TextBlock>Nombre del plato</TextBlock>
-                    <TextBox Text="{Binding CurrDish.Nombre, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding CurrDish}"></TextBox>
-                    <TextBlock>Foto del plato</TextBlock>
-                    <TextBox Text="{Binding CurrDish.Imagen, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                    <TextBlock>Tipo de comida</TextBlock>
-                    <ComboBox ItemsSource="{Binding Countries}" SelectedItem="{Binding CurrDish.Tipo, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
-                    <GroupBox Header="Alérgenos">
+                <StackPanel DockPanel.Dock="Right" Width="240" Background="LightGray" Style="{StaticResource enabledWhenNull}" Margin="10">
+                    <TextBlock Margin="10,10,0,0">Nombre del plato</TextBlock>
+                    <TextBox Margin="10" Text="{Binding CurrDish.Nombre, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding CurrDish}"></TextBox>
+                    <TextBlock Margin="10,0,0,0">Foto del plato</TextBlock>
+                    <TextBox Margin="10"  Text="{Binding CurrDish.Imagen, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    <TextBlock Margin="10,0,0,0">Tipo de comida</TextBlock>
+                    <ComboBox Margin="10" ItemsSource="{Binding Countries}" SelectedItem="{Binding CurrDish.Tipo, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+                    <GroupBox Header="Alérgenos" Margin="10">
                         <UniformGrid>
                             <CheckBox Margin="10" IsChecked="{Binding CurrDish.Leche, UpdateSourceTrigger=PropertyChanged}" >Leche</CheckBox>
                             <CheckBox Margin="10" IsChecked="{Binding CurrDish.Soja, UpdateSourceTrigger=PropertyChanged}" >Soja</CheckBox>
@@ -90,9 +90,14 @@
                             <CheckBox Margin="10" IsChecked="{Binding CurrDish.Sulfitos, UpdateSourceTrigger=PropertyChanged}" >Sulfitos</CheckBox>
                         </UniformGrid>
                     </GroupBox>
-                    <Button x:Name="limpiarSeleccionButton" Click="limpiarSeleccionButton_Click">Limpiar Selección</Button>
+                    <DockPanel LastChildFill="False">
+                        <Button x:Name="limpiarSeleccionButton" Click="limpiarSeleccionButton_Click" DockPanel.Dock="Left" Width="150" Margin="10,0,0,0" Background="LightBlue">Limpiar Selección</Button>
+                    </DockPanel>
+                        
+                    
+                    
                 </StackPanel>
-                <ListBox x:Name="mainListBox" ItemsSource="{Binding Dishes}" SelectedItem="{Binding CurrDish}" ItemTemplate="{StaticResource DishItemTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox x:Name="mainListBox" ItemsSource="{Binding Dishes}" SelectedItem="{Binding CurrDish}" ItemTemplate="{StaticResource DishItemTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel></WrapPanel>

@@ -15,6 +15,7 @@ class Plato : INotifyPropertyChanged
     private string imagen;
 
     public string Imagen
+
     {
         get { return imagen; }
         set { imagen = value; NotifyPropertyChanged("Imagen"); }
