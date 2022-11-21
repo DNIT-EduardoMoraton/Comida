@@ -10,13 +10,13 @@
         Title="Comida" Height="450" Width="800" Icon="icons/fruit_food_apple.ico" >
     <Window.Resources>
         <conv:VisibilityConverter x:Key="visibilityConv"></conv:VisibilityConverter>
-        
+
         <Style x:Key="ItemTitle" TargetType="{x:Type TextBlock}">
             <Setter Property="FontFamily" Value="Taco Salad"></Setter>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="China">
                     <Setter Property="FontFamily" Value="Chinese Wok Food St"></Setter>
-                </DataTrigger>  
+                </DataTrigger>
                 <DataTrigger Binding="{Binding Tipo}" Value="Americana">
                     <Setter Property="FontFamily" Value="Slim Summer"></Setter>
                 </DataTrigger>
@@ -65,24 +65,93 @@
                         <Image x:Name="sojaImage" Source="./img/items/soybean.png" DockPanel.Dock="Right" Visibility="{Binding Soja, Converter={StaticResource visibilityConv}}" Width="20"/>
                         <Image x:Name="glutenImage" Source="./img/items/gluten.png" DockPanel.Dock="Right" Visibility="{Binding Gluten, Converter={StaticResource visibilityConv}}"  Width="20"/>
                     </DockPanel>
-                    <Image x:Name="mainImage" Source="{Binding Imagen}"  Width="200" Height="200"  Stretch="UniformToFill"/>
+                    <Image x:Name="mainImage" Source="{Binding Imagen}"  Width="200" Height="200" Margin="10" Stretch="UniformToFill"/>
                 </DockPanel>
             </Border>
         </DataTemplate>
+
+        <ControlTemplate x:Key="TextBoxControlTemplateBlueShadow" TargetType="{x:Type TextBox}">
+
+            <Border x:Name="border" CornerRadius="3" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True" Padding="2">
+                <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FF7EB4EA"/>
+                </Trigger>
+                <Trigger Property="IsKeyboardFocused" Value="True">
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FF569DE5"/>
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect Color="#FF569DE5" ShadowDepth="0" BlurRadius="5"></DropShadowEffect>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+
+
+        <Style x:Key="TextBoxBlueShadow" TargetType="{x:Type TextBox}">
+            <Setter Property="Template" Value="{StaticResource TextBoxControlTemplateBlueShadow}"></Setter>
+        </Style>
+        <ControlTemplate x:Key="GroupBoxControlTemplateNoRound" TargetType="{x:Type GroupBox}">
+            <Grid SnapsToDevicePixels="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="6"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="6"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="6"/>
+                </Grid.RowDefinitions>
+                <Border BorderBrush="Transparent" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Grid.ColumnSpan="4" Grid.Column="0" CornerRadius="4" Grid.Row="1" Grid.RowSpan="3"/>
+                <Border BorderBrush="White" BorderThickness="{TemplateBinding BorderThickness}" Grid.ColumnSpan="4" CornerRadius="4" Grid.Row="1" Grid.RowSpan="3">
+                    <Border.OpacityMask>
+                        <MultiBinding ConverterParameter="7" UpdateSourceTrigger="Default">
+                            <MultiBinding.Converter>
+                                <BorderGapMaskConverter/>
+                            </MultiBinding.Converter>
+                            <Binding ElementName="Header" Path="ActualWidth"/>
+                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                            <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
+                        </MultiBinding>
+                    </Border.OpacityMask>
+                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3">
+                        <Border BorderBrush="White" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2"/>
+                    </Border>
+                </Border>
+                <Border x:Name="Header" Grid.Column="1" Padding="3,1,3,0" Grid.Row="0" Grid.RowSpan="2">
+                    <ContentPresenter ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" ContentStringFormat="{TemplateBinding HeaderStringFormat}" ContentSource="Header" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                </Border>
+                <ContentPresenter Grid.ColumnSpan="2" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Grid.Column="1" ContentStringFormat="{TemplateBinding ContentStringFormat}" Margin="{TemplateBinding Padding}" Grid.Row="2" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+            </Grid>
+        </ControlTemplate>
+
     </Window.Resources>
-    
-    
+
+
+
+
+
     <Grid Background="LightBlue">
         <Border Margin="8" BorderBrush="Black" BorderThickness="1" Background="White">
             <DockPanel>
                 <StackPanel DockPanel.Dock="Right" Width="240" Background="LightGray" Style="{StaticResource enabledWhenNull}" Margin="10">
                     <TextBlock Margin="10,10,0,0">Nombre del plato</TextBlock>
-                    <TextBox Margin="10" Text="{Binding CurrDish.Nombre, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding CurrDish}"></TextBox>
+                    <TextBox Margin="10" Text="{Binding CurrDish.Nombre, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding CurrDish}" Style="{StaticResource TextBoxBlueShadow}"></TextBox>
                     <TextBlock Margin="10,0,0,0">Foto del plato</TextBlock>
-                    <TextBox Margin="10"  Text="{Binding CurrDish.Imagen, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    <TextBox Margin="10"  Text="{Binding CurrDish.Imagen, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxBlueShadow}"></TextBox>
                     <TextBlock Margin="10,0,0,0">Tipo de comida</TextBlock>
                     <ComboBox Margin="10" ItemsSource="{Binding Countries}" SelectedItem="{Binding CurrDish.Tipo, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
-                    <GroupBox Header="Alérgenos" Margin="10">
+                    <GroupBox Header="Alérgenos" Margin="10" Template="{DynamicResource GroupBoxControlTemplateNoRound}">
                         <UniformGrid>
                             <CheckBox Margin="10" IsChecked="{Binding CurrDish.Leche, UpdateSourceTrigger=PropertyChanged}" >Leche</CheckBox>
                             <CheckBox Margin="10" IsChecked="{Binding CurrDish.Soja, UpdateSourceTrigger=PropertyChanged}" >Soja</CheckBox>
@@ -93,9 +162,9 @@
                     <DockPanel LastChildFill="False">
                         <Button x:Name="limpiarSeleccionButton" Click="limpiarSeleccionButton_Click" DockPanel.Dock="Left" Width="150" Margin="10,0,0,0" Background="LightBlue">Limpiar Selección</Button>
                     </DockPanel>
-                        
-                    
-                    
+
+
+
                 </StackPanel>
                 <ListBox x:Name="mainListBox" ItemsSource="{Binding Dishes}" SelectedItem="{Binding CurrDish}" ItemTemplate="{StaticResource DishItemTemplate}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10">
                     <ListBox.ItemsPanel>
@@ -106,7 +175,7 @@
                 </ListBox>
             </DockPanel>
         </Border>
-       
-        
+
+
     </Grid>
 </Window>
