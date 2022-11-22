@@ -98,6 +98,7 @@
         <Style x:Key="TextBoxBlueShadow" TargetType="{x:Type TextBox}">
             <Setter Property="Template" Value="{StaticResource TextBoxControlTemplateBlueShadow}"></Setter>
         </Style>
+
         <ControlTemplate x:Key="GroupBoxControlTemplateNoRound" TargetType="{x:Type GroupBox}">
             <Grid SnapsToDevicePixels="True">
                 <Grid.ColumnDefinitions>
@@ -112,8 +113,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="6"/>
                 </Grid.RowDefinitions>
-                <Border BorderBrush="Transparent" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Grid.ColumnSpan="4" Grid.Column="0" CornerRadius="4" Grid.Row="1" Grid.RowSpan="3"/>
-                <Border BorderBrush="White" BorderThickness="{TemplateBinding BorderThickness}" Grid.ColumnSpan="4" CornerRadius="4" Grid.Row="1" Grid.RowSpan="3">
+                <Border BorderBrush="Black" BorderThickness="{TemplateBinding BorderThickness}" Grid.ColumnSpan="4" CornerRadius="4" Grid.Row="1" Grid.RowSpan="3">
                     <Border.OpacityMask>
                         <MultiBinding ConverterParameter="7" UpdateSourceTrigger="Default">
                             <MultiBinding.Converter>
@@ -124,9 +124,6 @@
                             <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
                         </MultiBinding>
                     </Border.OpacityMask>
-                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3">
-                        <Border BorderBrush="White" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2"/>
-                    </Border>
                 </Border>
                 <Border x:Name="Header" Grid.Column="1" Padding="3,1,3,0" Grid.Row="0" Grid.RowSpan="2">
                     <ContentPresenter ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" ContentStringFormat="{TemplateBinding HeaderStringFormat}" ContentSource="Header" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
@@ -134,6 +131,107 @@
                 <ContentPresenter Grid.ColumnSpan="2" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Grid.Column="1" ContentStringFormat="{TemplateBinding ContentStringFormat}" Margin="{TemplateBinding Padding}" Grid.Row="2" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
             </Grid>
         </ControlTemplate>
+
+        <ControlTemplate x:Key="CheckBoxControlTemplateBlueModern" TargetType="{x:Type CheckBox}">
+            <Grid x:Name="templateRoot" Background="Transparent" SnapsToDevicePixels="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border x:Name="checkBoxBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="1" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" CornerRadius="4">
+                    <Grid x:Name="markGrid">
+                        <Path x:Name="optionMark" Data="F1M9.97498,1.22334L4.6983,9.09834 4.52164,9.09834 0,5.19331 1.27664,3.52165 4.255,6.08833 8.33331,1.52588E-05 9.97498,1.22334z" Fill="#FF5593FF" Margin="1.5" Opacity="0" Stretch="None" />
+                        <Rectangle x:Name="indeterminateMark" Fill="#FF5593FF" Margin="2" Opacity="0"/>
+                    </Grid>
+                </Border>
+                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Grid.Column="1" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="HasContent" Value="True">
+                    <Setter Property="FocusVisualStyle">
+                        <Setter.Value>
+                            <Style>
+                                <Setter Property="Control.Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <Rectangle Margin="14,0,0,0" SnapsToDevicePixels="True" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Padding" Value="4,-1,0,0"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" TargetName="checkBoxBorder" Value="#FFF3F9FF"/>
+                    <Setter Property="BorderBrush" TargetName="checkBoxBorder" Value="#FF5593FF"/>
+                    <Setter Property="Fill" TargetName="optionMark" Value="#FF212121"/>
+                    <Setter Property="Fill" TargetName="indeterminateMark" Value="#FF212121"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" TargetName="checkBoxBorder" Value="#FFE6E6E6"/>
+                    <Setter Property="BorderBrush" TargetName="checkBoxBorder" Value="#FFBCBCBC"/>
+                    <Setter Property="Fill" TargetName="optionMark" Value="#FF707070"/>
+                    <Setter Property="Fill" TargetName="indeterminateMark" Value="#FF707070"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" TargetName="checkBoxBorder" Value="#FFD9ECFF"/>
+                    <Setter Property="BorderBrush" TargetName="checkBoxBorder" Value="#FF3C77DD"/>
+                    <Setter Property="Fill" TargetName="optionMark" Value="#FF212121"/>
+                    <Setter Property="Fill" TargetName="indeterminateMark" Value="#FF212121"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Opacity" TargetName="optionMark" Value="1"/>
+                    <Setter Property="Opacity" TargetName="indeterminateMark" Value="0"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="{x:Null}">
+                    <Setter Property="Opacity" TargetName="optionMark" Value="0"/>
+                    <Setter Property="Opacity" TargetName="indeterminateMark" Value="1"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+
+        <Style x:Key="CheckBoxBlueModern" TargetType="{x:Type CheckBox}">
+            <Setter Property="Template" Value="{StaticResource CheckBoxControlTemplateBlueModern}"></Setter>
+        </Style>
+
+
+
+        <ControlTemplate x:Key="ButtonControlTemplateBlueButton" TargetType="{x:Type Button}">
+            
+            <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True" CornerRadius="3" Background="LightBlue">
+                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsDefaulted" Value="True">
+                    <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" TargetName="border" Value="#FFBEE6FD"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FF3C7FB1"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" TargetName="border" Value="#FFC4E5F6"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FF2C628B"/>
+                </Trigger>
+                <Trigger Property="ToggleButton.IsChecked" Value="True">
+                    <Setter Property="Background" TargetName="border" Value="#FFBCDDEE"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FF245A83"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" TargetName="border" Value="#FFF4F4F4"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FFADB2B5"/>
+                    <Setter Property="Foreground" Value="#FF838383"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+
+        <Style x:Key="ButtonBlue" TargetType="{x:Type Button}">
+            <Setter Property="Template" Value="{StaticResource ButtonControlTemplateBlueButton}"></Setter>
+        </Style>
 
     </Window.Resources>
 
@@ -153,14 +251,14 @@
                     <ComboBox Margin="10" ItemsSource="{Binding Countries}" SelectedItem="{Binding CurrDish.Tipo, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
                     <GroupBox Header="Alérgenos" Margin="10" Template="{DynamicResource GroupBoxControlTemplateNoRound}">
                         <UniformGrid>
-                            <CheckBox Margin="10" IsChecked="{Binding CurrDish.Leche, UpdateSourceTrigger=PropertyChanged}" >Leche</CheckBox>
-                            <CheckBox Margin="10" IsChecked="{Binding CurrDish.Soja, UpdateSourceTrigger=PropertyChanged}" >Soja</CheckBox>
-                            <CheckBox Margin="10" IsChecked="{Binding CurrDish.Gluten, UpdateSourceTrigger=PropertyChanged}" >Gluten</CheckBox>
-                            <CheckBox Margin="10" IsChecked="{Binding CurrDish.Sulfitos, UpdateSourceTrigger=PropertyChanged}" >Sulfitos</CheckBox>
+                            <CheckBox Margin="10" IsChecked="{Binding CurrDish.Leche, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CheckBoxBlueModern}" >Leche</CheckBox>
+                            <CheckBox Margin="10" IsChecked="{Binding CurrDish.Soja, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CheckBoxBlueModern}">Soja</CheckBox>
+                            <CheckBox Margin="10" IsChecked="{Binding CurrDish.Gluten, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CheckBoxBlueModern}">Gluten</CheckBox>
+                            <CheckBox Margin="10" IsChecked="{Binding CurrDish.Sulfitos, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CheckBoxBlueModern}">Sulfitos</CheckBox>
                         </UniformGrid>
                     </GroupBox>
                     <DockPanel LastChildFill="False">
-                        <Button x:Name="limpiarSeleccionButton" Click="limpiarSeleccionButton_Click" DockPanel.Dock="Left" Width="150" Margin="10,0,0,0" Background="LightBlue">Limpiar Selección</Button>
+                        <Button x:Name="limpiarSeleccionButton" Click="limpiarSeleccionButton_Click" DockPanel.Dock="Left" Width="150" Margin="10,0,0,0" Style="{StaticResource ButtonBlue}">Limpiar Selección</Button>
                     </DockPanel>
 
 
